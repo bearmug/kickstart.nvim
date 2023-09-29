@@ -224,7 +224,8 @@ require('lazy').setup({
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   { import = 'custom.plugins' },
-  
+
+
   -- simple configuration for neo-tree.nvim https://github.com/nvim-neo-tree/neo-tree.nvim#minimal-example-for-lazy
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -233,6 +234,14 @@ require('lazy').setup({
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
       "MunifTanjim/nui.nvim",
+    }
+  },
+ 
+  -- enable diff plugin https://github.com/jemag/telescope-diff.nvim#installation
+  {
+    "jemag/telescope-diff.nvim",
+    dependencies = {
+      { "nvim-telescope/telescope.nvim" },
     }
   }
 }, {})
@@ -315,6 +324,8 @@ require('telescope').setup {
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
 
+pcall(require('telescope').load_extension, 'diff')
+
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
@@ -333,6 +344,14 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { de
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
+
+--extra mappings for diff plugin
+vim.keymap.set("n", "<leader>sC", function()
+  require("telescope").extensions.diff.diff_files({ hidden = true })
+end, { desc = "Compare 2 files" })
+vim.keymap.set("n", "<leader>sc", function()
+  require("telescope").extensions.diff.diff_current({ hidden = true })
+end, { desc = "Compare file with current" })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
